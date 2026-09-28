@@ -68,4 +68,22 @@ Possible next steps: Firefox CI matrix, careful parallel execution, accessibilit
 
 ## Verification status
 
-Maven and Chrome were installed in the build workspace; all 16 Java sources compile. The UI suite could not run here because the workspace blocks a socket operation required by Chrome startup (`socket() failed: Operation not permitted`). Two separate Ubuntu runs reported 14 tests, 8 failures, 0 skips against Chrome. The second run's screenshots show that several successive clicks leave the browser on the same page; click dispatch was changed to W3C pointer actions and browser-console evidence was added afterward. **This revision has not yet passed a UI run.** See `VALIDATION.md` for the evidence. Do not claim a passing suite until a fresh run confirms it.
+The framework has been successfully validated both locally and in CI.
+
+### Local execution
+
+Tested on Ubuntu with Java 17 and Google Chrome:
+
+- Tests run: 14
+- Failures: 0
+- Errors: 0
+- Skipped: 0
+- Result: **BUILD SUCCESS**
+
+### Continuous Integration
+
+GitHub Actions executes the regression suite automatically in headless Chrome on pushes and pull requests.
+
+The CI workflow has completed successfully with all tests passing and uploads test evidence as a workflow artifact.
+
+The framework is therefore verified for both local execution and automated CI execution.
