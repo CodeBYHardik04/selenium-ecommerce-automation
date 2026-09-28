@@ -6,6 +6,7 @@ import org.openqa.selenium.WebDriver;
 import org.openqa.selenium.WebElement;
 import org.openqa.selenium.support.ui.ExpectedConditions;
 import org.openqa.selenium.support.ui.WebDriverWait;
+import java.net.URI;
 
 public abstract class BasePage {
     protected final WebDriver driver;
@@ -19,4 +20,7 @@ public abstract class BasePage {
     protected void click(By locator) { clickable(locator).click(); }
     protected void type(By locator, String text) { WebElement element = visible(locator); element.clear(); element.sendKeys(text); }
     protected String text(By locator) { return visible(locator).getText(); }
+    protected void onPath(String path) {
+        wait.until(d -> path.equals(URI.create(d.getCurrentUrl()).getPath()));
+    }
 }

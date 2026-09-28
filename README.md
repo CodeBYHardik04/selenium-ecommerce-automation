@@ -68,4 +68,4 @@ Possible next steps: Firefox CI matrix, careful parallel execution, accessibilit
 
 ## Verification status
 
-Maven and Chrome were installed in the build workspace; all 16 Java sources compiled. The UI suite could not run here because the workspace blocks a socket operation required by Chrome startup (`socket() failed: Operation not permitted`). **No passing UI test result is claimed.** Run `mvn clean test` in an ordinary browser-capable environment, investigate actual test failures, and confirm a successful CI run before presenting this as verified execution. See `VALIDATION.md` for the commands and evidence.
+Maven and Chrome were installed in the build workspace; all 16 Java sources compile. The UI suite could not run here because the workspace blocks a socket operation required by Chrome startup (`socket() failed: Operation not permitted`). A separate Ubuntu run reported 14 tests, 8 failures, 0 skips against Chrome. Page transitions and cart updates were corrected afterward, and the updated sources compile, but **the corrected UI suite has not yet been rerun**. See `VALIDATION.md` for the evidence. Do not claim a passing suite until a fresh run confirms it.

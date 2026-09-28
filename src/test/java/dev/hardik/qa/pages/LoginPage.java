@@ -11,10 +11,11 @@ public class LoginPage extends BasePage {
     public LoginPage(WebDriver driver) { super(driver); }
     public InventoryPage login(String user, String pass) {
         submit(user, pass);
-        return new InventoryPage(driver);
+        return new InventoryPage(driver).waitUntilLoaded();
     }
     public LoginPage attemptLogin(String user, String pass) { submit(user, pass); return this; }
     private void submit(String user, String pass) { type(username, user); type(password, pass); click(submit); }
     public String errorMessage() { return text(error); }
-    public boolean isDisplayed() { return visible(submit).isDisplayed(); }
+    public LoginPage waitUntilLoaded() { onPath("/"); visible(submit); return this; }
+    public boolean isDisplayed() { return waitUntilLoaded().visible(submit).isDisplayed(); }
 }

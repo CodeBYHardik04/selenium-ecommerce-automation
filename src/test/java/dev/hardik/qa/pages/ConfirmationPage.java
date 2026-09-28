@@ -7,6 +7,7 @@ public class ConfirmationPage extends BasePage {
     private final By heading = By.cssSelector("[data-test='complete-header']");
     private final By message = By.cssSelector("[data-test='complete-text']");
     public ConfirmationPage(WebDriver driver) { super(driver); }
+    public ConfirmationPage waitUntilLoaded() { onPath("/checkout-complete.html"); visible(heading); return this; }
     public String heading() { return text(heading); }
     public String message() { return text(message); }
 }

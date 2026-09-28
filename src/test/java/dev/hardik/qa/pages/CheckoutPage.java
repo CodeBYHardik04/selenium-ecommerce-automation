@@ -10,10 +10,11 @@ public class CheckoutPage extends BasePage {
     private final By next = By.id("continue");
     private final By error = By.cssSelector("[data-test='error']");
     public CheckoutPage(WebDriver driver) { super(driver); }
+    public CheckoutPage waitUntilLoaded() { onPath("/checkout-step-one.html"); visible(first); return this; }
     public CheckoutPage enterInformation(String firstName, String lastName, String postalCode) {
         type(first, firstName); type(last, lastName); type(postal, postalCode); return this;
     }
     public CheckoutPage continueExpectingError() { click(next); return this; }
-    public OverviewPage continueToOverview() { click(next); return new OverviewPage(driver); }
+    public OverviewPage continueToOverview() { click(next); return new OverviewPage(driver).waitUntilLoaded(); }
     public String errorMessage() { return text(error); }
 }

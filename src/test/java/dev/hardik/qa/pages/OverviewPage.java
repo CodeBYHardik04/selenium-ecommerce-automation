@@ -9,7 +9,8 @@ public class OverviewPage extends BasePage {
     private final By total = By.cssSelector("[data-test='total-label']");
     private final By finish = By.id("finish");
     public OverviewPage(WebDriver driver) { super(driver); }
+    public OverviewPage waitUntilLoaded() { onPath("/checkout-step-two.html"); visible(total); return this; }
     public List<String> productNames() { visible(names); return driver.findElements(names).stream().map(e -> e.getText()).toList(); }
     public String total() { return text(total); }
-    public ConfirmationPage finish() { click(finish); return new ConfirmationPage(driver); }
+    public ConfirmationPage finish() { click(finish); return new ConfirmationPage(driver).waitUntilLoaded(); }
 }

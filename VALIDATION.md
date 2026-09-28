@@ -16,3 +16,9 @@ mvn clean test -Dbrowser=firefox -Dheadless=true
 ```
 
 Inspect `target/surefire-reports/` and `target/reports/index.html`. Fix any actual locator or assertion failures before describing the suite as passing or publishing screenshots of test results. CI also needs a real run to verify its browser setup.
+
+## Ubuntu run and follow-up
+
+The user ran the original archive with Chrome 150 on Ubuntu: **14 tests, 8 failures, 0 errors, 0 skips**. Failures clustered around cart/detail/checkout navigation, immediate cart badge reading, and logout. The current SauceDemo JavaScript bundle confirms the product-card, route, cart, checkout, and login test IDs. The page objects now scope item actions to their product card, wait for the cart's visible state after adding/removing, and confirm each destination route and page landmark before returning the next page object. The report also records the URL at failure.
+
+After these changes, `mvn -B -o -s /tmp/codex-maven-settings.xml test-compile` completed successfully for all 16 Java files in this workspace. The corrected UI suite has **not** run successfully here; the Chrome socket restriction remains. The next Ubuntu `mvn clean test` is the acceptance check. If a failure remains, use its report URL and screenshot to identify the actual page and selector before making another change.

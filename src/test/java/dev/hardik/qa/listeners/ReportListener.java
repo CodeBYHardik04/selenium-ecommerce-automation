@@ -44,6 +44,7 @@ public class ReportListener implements ITestListener {
         ExtentTest test = CURRENT.get();
         if (test != null) test.fail(result.getThrowable());
         try {
+            if (test != null) test.info("URL at failure: " + DriverFactory.get().getCurrentUrl());
             byte[] screenshot = ((TakesScreenshot) DriverFactory.get()).getScreenshotAs(OutputType.BYTES);
             Path directory = reportDir.resolve("screenshots");
             Files.createDirectories(directory);
