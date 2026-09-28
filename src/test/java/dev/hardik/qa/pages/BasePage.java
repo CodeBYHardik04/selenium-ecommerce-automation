@@ -2,8 +2,10 @@ package dev.hardik.qa.pages;
 
 import dev.hardik.qa.config.Config;
 import org.openqa.selenium.By;
+import org.openqa.selenium.TimeoutException;
 import org.openqa.selenium.WebDriver;
 import org.openqa.selenium.WebElement;
+import org.openqa.selenium.interactions.Actions;
 import org.openqa.selenium.support.ui.ExpectedConditions;
 import org.openqa.selenium.support.ui.WebDriverWait;
 import java.net.URI;
@@ -17,10 +19,18 @@ public abstract class BasePage {
     }
     protected WebElement visible(By locator) { return wait.until(ExpectedConditions.visibilityOfElementLocated(locator)); }
     protected WebElement clickable(By locator) { return wait.until(ExpectedConditions.elementToBeClickable(locator)); }
-    protected void click(By locator) { clickable(locator).click(); }
+    protected void click(By locator) {
+        WebElement element = clickable(locator);
+        new Actions(driver).moveToElement(element).click().perform();
+    }
     protected void type(By locator, String text) { WebElement element = visible(locator); element.clear(); element.sendKeys(text); }
     protected String text(By locator) { return visible(locator).getText(); }
     protected void onPath(String path) {
-        wait.until(d -> path.equals(URI.create(d.getCurrentUrl()).getPath()));
+        try {
+            wait.until(d -> path.equals(URI.create(d.getCurrentUrl()).getPath()));
+        } catch (TimeoutException e) {
+            throw new AssertionError("Expected page path " + path + " after navigation, but browser remained at "
+                    + driver.getCurrentUrl(), e);
+        }
     }
 }

@@ -7,6 +7,9 @@ import org.openqa.selenium.chrome.ChromeDriver;
 import org.openqa.selenium.chrome.ChromeOptions;
 import org.openqa.selenium.firefox.FirefoxDriver;
 import org.openqa.selenium.firefox.FirefoxOptions;
+import org.openqa.selenium.logging.LogType;
+import org.openqa.selenium.logging.LoggingPreferences;
+import java.util.logging.Level;
 
 public final class DriverFactory {
     private static final ThreadLocal<WebDriver> DRIVER = new ThreadLocal<>();
@@ -26,6 +29,9 @@ public final class DriverFactory {
                 ChromeOptions options = new ChromeOptions();
                 if (headless) options.addArguments("--headless=new", "--window-size=1440,900", "--no-sandbox");
                 options.addArguments("--disable-dev-shm-usage");
+                LoggingPreferences browserLogs = new LoggingPreferences();
+                browserLogs.enable(LogType.BROWSER, Level.ALL);
+                options.setCapability("goog:loggingPrefs", browserLogs);
                 String proxy = System.getProperty("browser.proxy");
                 if (proxy != null && !proxy.isBlank()) options.addArguments("--proxy-server=" + proxy);
                 driver = new ChromeDriver(options);

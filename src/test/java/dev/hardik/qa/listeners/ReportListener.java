@@ -13,6 +13,7 @@ import java.util.logging.Level;
 import java.util.logging.Logger;
 import org.openqa.selenium.OutputType;
 import org.openqa.selenium.TakesScreenshot;
+import org.openqa.selenium.logging.LogType;
 import org.testng.ITestContext;
 import org.testng.ITestListener;
 import org.testng.ITestResult;
@@ -45,6 +46,14 @@ public class ReportListener implements ITestListener {
         if (test != null) test.fail(result.getThrowable());
         try {
             if (test != null) test.info("URL at failure: " + DriverFactory.get().getCurrentUrl());
+            try {
+                DriverFactory.get().manage().logs().get(LogType.BROWSER).forEach(entry -> {
+                    if (test != null) test.warning("Browser console: " + entry.getMessage());
+                    LOG.warning("Browser console: " + entry.getMessage());
+                });
+            } catch (Exception unavailable) {
+                LOG.fine("Browser console logs unavailable: " + unavailable.getMessage());
+            }
             byte[] screenshot = ((TakesScreenshot) DriverFactory.get()).getScreenshotAs(OutputType.BYTES);
             Path directory = reportDir.resolve("screenshots");
             Files.createDirectories(directory);
