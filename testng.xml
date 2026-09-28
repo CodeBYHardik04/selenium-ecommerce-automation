@@ -1,0 +1,10 @@
+<!DOCTYPE suite SYSTEM "https://testng.org/testng-1.0.dtd">
+<suite name="SauceDemo Regression" parallel="false">
+  <listeners><listener class-name="dev.hardik.qa.listeners.ReportListener"/></listeners>
+  <test name="E-commerce journeys"><classes>
+    <class name="dev.hardik.qa.tests.LoginTest"/>
+    <class name="dev.hardik.qa.tests.InventoryTest"/>
+    <class name="dev.hardik.qa.tests.CartTest"/>
+    <class name="dev.hardik.qa.tests.CheckoutTest"/>
+  </classes></test>
+</suite>
