@@ -17,20 +17,25 @@ public class InventoryPage extends BasePage {
     public List<String> productNames() { visible(names); return driver.findElements(names).stream().map(e -> e.getText()).toList(); }
     public ProductPage openProduct(String name) {
         By productLink = By.xpath(cardXPath(name) + "//a[contains(@data-test,'-title-link')]");
-        click(productLink);
+        navigate(productLink, "/inventory-item.html");
         return new ProductPage(driver).waitUntilLoaded();
     }
     public InventoryPage addProduct(String name) {
         int previousCount = cartCount();
         String slug = slug(name);
-        click(By.xpath(cardXPath(name) + "//button[@data-test='add-to-cart-" + slug + "']"));
+        By addButton = By.xpath(cardXPath(name) + "//button[@data-test='add-to-cart-" + slug + "']");
         By removeButton = By.xpath(cardXPath(name) + "//button[@data-test='remove-" + slug + "']");
-        wait.until(d -> !d.findElements(removeButton).isEmpty() && cartCount() == previousCount + 1);
+        clickAndAwait(addButton, d -> !d.findElements(removeButton).isEmpty()
+                && cartCount() == previousCount + 1);
         return this;
     }
     public int cartCount() { return driver.findElements(badge).isEmpty() ? 0 : Integer.parseInt(text(badge)); }
-    public CartPage openCart() { click(cart); return new CartPage(driver).waitUntilLoaded(); }
-    public LoginPage logout() { click(menu); click(logout); return new LoginPage(driver).waitUntilLoaded(); }
+    public CartPage openCart() { navigate(cart, "/cart.html"); return new CartPage(driver).waitUntilLoaded(); }
+    public LoginPage logout() {
+        clickAndAwait(menu, d -> d.findElements(logout).stream().anyMatch(e -> e.isDisplayed()));
+        navigate(logout, "/");
+        return new LoginPage(driver).waitUntilLoaded();
+    }
     private String cardXPath(String name) {
         return "//div[@data-test='inventory-item' and .//*[@data-test='inventory-item-name' and text()="
                 + xpathLiteral(name) + "]]";

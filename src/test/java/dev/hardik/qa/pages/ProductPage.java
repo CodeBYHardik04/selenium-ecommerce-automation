@@ -19,11 +19,10 @@ public class ProductPage extends BasePage {
     public String description() { return text(description); }
     public String price() { return text(price); }
     public ProductPage addToCart() {
-        click(add);
-        visible(remove);
-        wait.until(d -> !d.findElements(badge).isEmpty() && "1".equals(d.findElement(badge).getText()));
+        clickAndAwait(add, d -> !d.findElements(remove).isEmpty()
+                && !d.findElements(badge).isEmpty() && "1".equals(d.findElement(badge).getText()));
         return this;
     }
-    public CartPage openCart() { click(cart); return new CartPage(driver).waitUntilLoaded(); }
-    public InventoryPage backToProducts() { click(back); return new InventoryPage(driver).waitUntilLoaded(); }
+    public CartPage openCart() { navigate(cart, "/cart.html"); return new CartPage(driver).waitUntilLoaded(); }
+    public InventoryPage backToProducts() { navigate(back, "/inventory.html"); return new InventoryPage(driver).waitUntilLoaded(); }
 }

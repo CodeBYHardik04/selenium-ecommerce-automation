@@ -14,7 +14,13 @@ public class CheckoutPage extends BasePage {
     public CheckoutPage enterInformation(String firstName, String lastName, String postalCode) {
         type(first, firstName); type(last, lastName); type(postal, postalCode); return this;
     }
-    public CheckoutPage continueExpectingError() { click(next); return this; }
-    public OverviewPage continueToOverview() { click(next); return new OverviewPage(driver).waitUntilLoaded(); }
+    public CheckoutPage continueExpectingError() {
+        clickAndAwait(next, d -> d.findElements(error).stream().anyMatch(e -> e.isDisplayed()));
+        return this;
+    }
+    public OverviewPage continueToOverview() {
+        navigate(next, "/checkout-step-two.html");
+        return new OverviewPage(driver).waitUntilLoaded();
+    }
     public String errorMessage() { return text(error); }
 }

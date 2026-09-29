@@ -14,9 +14,8 @@ public class CartPage extends BasePage {
     public String heading() { return text(title); }
     public List<String> productNames() { visible(contents); return driver.findElements(names).stream().map(e -> e.getText()).toList(); }
     public CartPage remove(String name) {
-        click(By.id("remove-" + InventoryPage.slug(name)));
-        wait.until(d -> !productNames().contains(name));
+        clickAndAwait(By.id("remove-" + InventoryPage.slug(name)), d -> !productNames().contains(name));
         return this;
     }
-    public CheckoutPage checkout() { click(checkout); return new CheckoutPage(driver).waitUntilLoaded(); }
+    public CheckoutPage checkout() { navigate(checkout, "/checkout-step-one.html"); return new CheckoutPage(driver).waitUntilLoaded(); }
 }

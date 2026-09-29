@@ -12,5 +12,8 @@ public class OverviewPage extends BasePage {
     public OverviewPage waitUntilLoaded() { onPath("/checkout-step-two.html"); visible(total); return this; }
     public List<String> productNames() { visible(names); return driver.findElements(names).stream().map(e -> e.getText()).toList(); }
     public String total() { return text(total); }
-    public ConfirmationPage finish() { click(finish); return new ConfirmationPage(driver).waitUntilLoaded(); }
+    public ConfirmationPage finish() {
+        navigate(finish, "/checkout-complete.html");
+        return new ConfirmationPage(driver).waitUntilLoaded();
+    }
 }

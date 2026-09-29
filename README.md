@@ -68,7 +68,7 @@ Possible next steps: Firefox CI matrix, careful parallel execution, accessibilit
 
 ## Verification status
 
-The framework has been successfully validated both locally and in CI.
+The user reported a successful Ubuntu run with 14 tests passing. A later GitHub Actions run on 29 September 2026 reported 14 tests with 8 failures in headless Chrome. This revision addresses the observed no-op clicks and needs a new browser run before CI can be called green.
 
 ### Local execution
 
@@ -84,6 +84,4 @@ Tested on Ubuntu with Java 17 and Google Chrome:
 
 GitHub Actions executes the regression suite automatically in headless Chrome on pushes and pull requests.
 
-The CI workflow has completed successfully with all tests passing and uploads test evidence as a workflow artifact.
-
-The framework is therefore verified for both local execution and automated CI execution.
+GitHub Actions runs headless Chrome and uploads screenshots, HTML reports, and Surefire results even on failure. Check the latest run rather than relying on an older green badge. A warning is logged when a pointer click fails to cause its expected page change and the page object retries a DOM click.

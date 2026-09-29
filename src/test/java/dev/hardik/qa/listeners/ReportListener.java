@@ -62,6 +62,9 @@ public class ReportListener implements ITestListener {
             Path file = directory.resolve(filename);
             Files.write(file, screenshot);
             if (test != null) test.addScreenCaptureFromPath("screenshots/" + filename, "Failure screenshot");
+            String htmlName = filename.replace(".png", ".html");
+            Files.writeString(directory.resolve(htmlName), DriverFactory.get().getPageSource());
+            if (test != null) test.info("Page HTML at failure: screenshots/" + htmlName);
             LOG.info("Failure screenshot: " + file.toAbsolutePath());
         } catch (Exception e) { LOG.log(Level.WARNING, "Screenshot unavailable", e); }
         finally { CURRENT.remove(); }
